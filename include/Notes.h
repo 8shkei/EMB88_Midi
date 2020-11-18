@@ -82,6 +82,7 @@
 // #define G9  2
 
 //noise
+#define B9  9
 #define C9  8
 #define C9S 7
 #define D9  6
