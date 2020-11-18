@@ -11,15 +11,15 @@
 // #include "Prelude.h"
 // #include "Through_the_Fire_and_Flames.h"
 // #include "Mario_Underwater_Theme.h"
-#include "Welcome_to_the_JapariPark.h"
+// #include "Welcome_to_the_JapariPark.h"
 // #include "U.N.Owen_was_her.h"
 // #include "Nyanyanyanyanyanyanya!.h"
 // #include "DangerZone.h"
 // #include "Mario.h"
-// #include "Dial_Up.h"
+#include "Dial_Up.h"
 // #include "NoiseTest.h"
 
-#define vol 100
+#define vol 255
 
 #ifndef ncmax
 	#define ncmax 255
