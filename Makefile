@@ -35,7 +35,7 @@ $(TARGETS): $(OBJECTS) $(LIBS)
 	avr-gcc -o $(TARGETDIR)/$@ $^ $(CXXFLAGS2)
 	avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures $@ $(@:.elf=.hex)
 	@echo Build Finished! Writing now...
-	cmd /c "con2com.cmd $(TARGETS:.elf=.hex)"
+	cmd /c "con2com com6 38400 $(TARGETS:.elf=.hex) /"
 
 # 中間バイナリのディレクトリを掘りながら.cppを中間ファイル.oに
 $(OBJROOT)/%.o: $(SRCROOT)/%.${SCode}
