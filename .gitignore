@@ -1,0 +1,5 @@
+*.elf
+*.cmd
+*.hex
+obj/
+.vscode/
