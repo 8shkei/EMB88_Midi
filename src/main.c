@@ -125,7 +125,7 @@ ISR(TIMER2_OVF_vect){
 			}
 		}
 		#ifdef includenoise
-			if(notes[note] < 10 && notes[note])noise = rand()%(notes[note]*10)+(notes[note]*10);
+			if(notes[note] < 10 && notes[note])noise = rand()%(notes[note]*10)+(notes[note]*18);
 			else noise = 0;
 		#endif
 	}
