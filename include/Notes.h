@@ -43,7 +43,7 @@
 #define E6  23
 #define F6  22
 #define F6S 21
-#define G6  20
+#define G6  19
 #define G6S 18
 #define A6  17
 #define A6S 16
