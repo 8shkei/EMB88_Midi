@@ -16,8 +16,9 @@
 // #include "Nyanyanyanyanyanyanya!.h"
 // #include "DangerZone.h"
 // #include "Mario.h"
-#include "Dial_Up.h"
+// #include "Dial_Up.h"
 // #include "NoiseTest.h"
+#include "Thunderstruck.h"
 
 #define vol 255
 
