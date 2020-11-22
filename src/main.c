@@ -162,9 +162,11 @@ int main(void){
 		if((~PINC >> 4)&1){
 			TIMSK1= 0x0;
 			for(int i = 0;i<tc;i++) notes[i]=0;
-		}
+		}else
 		if((~PINC >> 4)>>1&1){
 			TIMSK1= 0x2;
+			for(int i = 0;i<tc;i++)
+				notes[i]=num[i]>0?pgm_read_byte(trackp[i]+ ((num[i]-1) * 2)):0;
 		}
 		// if(ADCSRA & 0x10){ 
 		// 	(ADC>>1);
