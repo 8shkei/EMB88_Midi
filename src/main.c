@@ -31,7 +31,6 @@
 unsigned char notes[tc];
 unsigned char note=0;
 
-unsigned int  len=0;
 unsigned int  lens[tc];
 unsigned int  num[tc];
 unsigned char wait[tc];
@@ -56,8 +55,7 @@ void setup(){
 #endif
 	mostlong=0;
 	for(int i = 0;i<tc;i++){
-		if(lens[i]>len){
-			len=lens[i];
+		if(lens[i]>lens[mostlong]){
 			mostlong=i;
 		}
 		num[i]=0;
@@ -73,7 +71,7 @@ ISR(TIMER1_COMPA_vect){
 	for(int i = 0;i<tc;i++){
 		if(wait[i]==0){
 			if(num[i]>=lens[i]){
-				if(num[i]>=len){
+				if(num[i]>=lens[mostlong]){
 					TIMSK1= 0;
 					for(int j = 0;j<tc;j++){
 						num[j]=0;
@@ -172,7 +170,7 @@ int main(void){
 		// 	(ADC>>1);
 		// 	ADCSRA |= 0x40;
 		// }
-		PORTB=0x80>>(int)(7.4/len*num[mostlong]);
+		PORTB=0x80>>(int)(7.4/lens[mostlong]*num[mostlong]);
 	}
 	return 0;
 }
