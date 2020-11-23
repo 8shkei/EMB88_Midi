@@ -34,8 +34,6 @@ DEPENDS  := $(OBJECTS:.o=.d)
 $(TARGETS): $(OBJECTS) $(LIBS)
 	avr-gcc -o $(TARGETDIR)/$@ $^ $(CXXFLAGS2)
 	avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures $@ $(@:.elf=.hex)
-	@echo Build Finished! Writing now...
-	cmd /c "con2com com6 38400 $(TARGETS:.elf=.hex) /"
 
 # 中間バイナリのディレクトリを掘りながら.cppを中間ファイル.oに
 $(OBJROOT)/%.o: $(SRCROOT)/%.${SCode}
@@ -46,6 +44,9 @@ $(OBJROOT)/%.o: $(SRCROOT)/%.${SCode}
 # 依存関係ファイル
 -include $(DEPENDS)
 
+install:$(TARGETS)
+	@echo Writing now...
+	@cmd /c "con2com com6 38400 $(TARGETS:.elf=.hex) /"
 clean:
 	$(RM) $(OBJECTS) $(TARGETS) $(TARGETS:.elf=.hex) $(DEPENDS)
 write:
