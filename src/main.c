@@ -20,7 +20,7 @@
 // #include "NoiseTest.h"
 #include "Thunderstruck.h"
 
-#define includeanalizer
+#define includeanalyzer
 
 #define vol 255
 
@@ -132,7 +132,7 @@ ISR(TIMER2_OVF_vect){
 	}
 }
 
-#ifdef includeanalizer
+#ifdef includeanalyzer
 
 unsigned char note_sqrt(unsigned char x){
 	for(int i = 7;i > 0;i--){
@@ -142,7 +142,7 @@ unsigned char note_sqrt(unsigned char x){
 	return 8;
 }
 
-void analizer(){
+void analyzer(){
     static unsigned char scan = 0;
 	static unsigned int cnt = 0;
 	static unsigned char bar[8];
@@ -206,8 +206,8 @@ int main(void){
 		// 	(ADC>>1);
 		// 	ADCSRA |= 0x40;
 		// }
-		#ifdef includeanalizer
-			analizer();
+		#ifdef includeanalyzer
+			analyzer();
 		#else
 			PORTB=0x80>>(int)(7.4/lens[mostlong]*num[mostlong]);
 		#endif
