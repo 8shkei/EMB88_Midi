@@ -20,6 +20,8 @@
 // #include "NoiseTest.h"
 #include "Thunderstruck.h"
 
+#define includeanalizer
+
 #define vol 255
 
 #ifndef ncmax
@@ -130,6 +132,38 @@ ISR(TIMER2_OVF_vect){
 	}
 }
 
+#ifdef includeanalizer
+
+unsigned char note_sqrt(unsigned char x){
+	for(int i = 7;i > 0;i--){
+		if((4*i*i) < x) return i;
+	}
+	if(x)return 0;
+	return 8;
+}
+
+void analizer(){
+    static unsigned char scan = 0;
+	static unsigned int cnt = 0;
+	static unsigned char bar[8];
+	if(cnt++>129){
+		cnt=0;
+		if(note_sqrt(notes[note])==scan){
+			if(scan<7)bar[(scan+1)%8] = bar[(scan+1)%8]>>1 &0x3F;
+			bar[scan] = bar[scan]>>1 &0xF;
+			if(scan>0)bar[(scan+7)%8] = bar[(scan+7)%8]>>1 &0x3F;
+		}else{
+			bar[scan] = (bar[scan]<<1)|0x01;
+		}
+	}
+	PORTB = 0;
+	PORTC = (PORTC & 0xF0) | (bar[scan] & 0x0F); 
+	PORTD = (PORTD & 0x0F) | (bar[scan] & 0xF0);
+	PORTB = 0x01 << scan;
+	scan = (scan + 1) &7;
+}
+#endif
+
 int main(void){
 	setup();
 	DDRB = 0xFF;
@@ -172,7 +206,11 @@ int main(void){
 		// 	(ADC>>1);
 		// 	ADCSRA |= 0x40;
 		// }
-		PORTB=0x80>>(int)(7.4/lens[mostlong]*num[mostlong]);
+		#ifdef includeanalizer
+			analizer();
+		#else
+			PORTB=0x80>>(int)(7.4/lens[mostlong]*num[mostlong]);
+		#endif
 	}
 	return 0;
 }
