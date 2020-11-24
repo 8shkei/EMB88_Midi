@@ -146,7 +146,7 @@ void analizer(){
     static unsigned char scan = 0;
 	static unsigned int cnt = 0;
 	static unsigned char bar[8];
-	if(cnt++>129){
+	if(cnt++>49){
 		cnt=0;
 		if(note_sqrt(notes[note])==scan){
 			if(scan<7)bar[(scan+1)%8] = bar[(scan+1)%8]>>1 &0x3F;
