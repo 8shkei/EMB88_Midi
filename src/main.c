@@ -185,11 +185,6 @@ int main(void){
 	TIMSK1= 0;
 	OCR2A=o2a;
 
-	// ADMUX=0x45;
-	// ADCSRB=0;
-	// ADCSRA=0xA7;
-	// ADCSRA |= 0x40;// 変換開始
-
 	sei();//割り込み有効化
 	while(1){
 		wdt_reset();
@@ -202,10 +197,6 @@ int main(void){
 			for(int i = 0;i<tc;i++)
 				notes[i]=num[i]>0?pgm_read_byte(trackp[i]+ ((num[i]-1) * 2)):0;
 		}
-		// if(ADCSRA & 0x10){ 
-		// 	(ADC>>1);
-		// 	ADCSRA |= 0x40;
-		// }
 		#ifdef includeanalyzer
 			analyzer();
 		#else
