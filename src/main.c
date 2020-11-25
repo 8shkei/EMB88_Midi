@@ -20,6 +20,7 @@
 // #include "NoiseTest.h"
 #include "Thunderstruck.h"
 
+#define includetaiko
 #define includeanalyzer
 
 #define vol 255
@@ -38,23 +39,29 @@ unsigned int  num[tc];
 unsigned char wait[tc];
 unsigned char *trackp[tc];
 unsigned char mostlong;
+
+
+#ifdef includetaiko
+unsigned char laststate = 0;
+#endif
+
 void setup(){
-#if tc>0
+	#if tc>0
 		trackp[0]=(unsigned char *)&track1;
 		lens[0]=sizeof(track1)/sizeof(*track1);
-#endif
-#if tc>1
+	#endif
+	#if tc>1
 		trackp[1]=(unsigned char *)&track2;
 		lens[1]=sizeof(track2)/sizeof(*track2);
-#endif
-#if tc>2
+	#endif
+	#if tc>2
 		trackp[2]=(unsigned char *)&track3;
 		lens[2]=sizeof(track3)/sizeof(*track3);
-#endif
-#if tc>3
+	#endif
+	#if tc>3
 		trackp[3]=(unsigned char *)&track4;
 		lens[3]=sizeof(track4)/sizeof(*track4);
-#endif
+	#endif
 	mostlong=0;
 	for(int i = 0;i<tc;i++){
 		if(lens[i]>lens[mostlong]){
@@ -66,6 +73,12 @@ void setup(){
 	}
 	#ifdef includenoise
 		srand(10);
+	#endif
+	#ifdef includetaiko
+		UBRR0 = 500000/38400-1;
+		UCSR0A= 0;
+		UCSR0C= 6;
+		UCSR0B= 0x18;
 	#endif
 }
 
@@ -86,6 +99,9 @@ ISR(TIMER1_COMPA_vect){
 				wait[i]=pgm_read_byte(trackp[i]+ (num[i] * 2)+1);
 				num[i]++;
 			}
+			#ifdef includetaiko
+				laststate |= notes[0];
+			#endif
 		}
 		wait[i]--;
 	}
@@ -132,6 +148,38 @@ ISR(TIMER2_OVF_vect){
 	}
 }
 
+#ifdef includetaiko
+void sendstring(char str[]){
+	int i = 0;
+	while(str[i]!='\0'){
+		wdt_reset();
+		if(UCSR0A&0x20){
+			UDR0=str[i];
+			i++;
+		}
+	}
+}
+void taiko(){
+	if(!(laststate & 0x80)){
+		if(!(laststate & ~0x80)){
+			sendstring("\e[1;37;41mB");
+			PORTB=0x00;
+		}else if(pgm_read_byte(trackp[0]+ (num[0] * 2)+1)-wait[0]<3 || wait[0]<3){
+			PORTB=0xFF;
+			laststate &= 0x80;
+			sendstring("\e[1;37;42mG");
+		}else{
+			sendstring("\e[1;37;41mB");
+			PORTB=0x00;
+		}
+		sendstring("\e[0m");
+		laststate|=0x80;
+		return;
+	}else if((PINC >> 4)>>1&1)laststate &= ~0x80;
+	
+}
+#endif
+
 #ifdef includeanalyzer
 
 unsigned char note_sqrt(unsigned char x){
@@ -170,7 +218,7 @@ int main(void){
 	DDRC = 0x0F;
 	DDRD = 0xFE;
 	
-	PORTB = 0x80;
+	PORTB = 0x00;
 	PORTD = 0x00;
 	PORTC = 0x30;//ここゼロにしてるとスイッチ反応しない。
 	
@@ -196,11 +244,16 @@ int main(void){
 			TIMSK1= 0x2;
 			for(int i = 0;i<tc;i++)
 				notes[i]=num[i]>0?pgm_read_byte(trackp[i]+ ((num[i]-1) * 2)):0;
+			#ifdef includetaiko
+				taiko();
+			#endif
 		}
 		#ifdef includeanalyzer
 			analyzer();
 		#else
+		#ifndef includetaiko
 			PORTB=0x80>>(int)(7.4/lens[mostlong]*num[mostlong]);
+		#endif
 		#endif
 	}
 	return 0;
