@@ -1,6 +1,6 @@
 #MakeFile C,C++用 SCodeにてソースファイルの拡張子選択
 SCode	 := c
-
+COM       = com6
 CC        = avr-gcc
 
 LDFLAGS   = -lwinmm
@@ -46,9 +46,7 @@ $(OBJROOT)/%.o: $(SRCROOT)/%.${SCode}
 
 install:$(TARGETS)
 	@echo Writing now...
-	@cmd /c "con2com com6 38400 $(TARGETS:.elf=.hex) /"
+	@cmd /c "con2com $(COM) 38400 $(TARGETS:.elf=.hex) /"
 clean:
 	$(RM) $(OBJECTS) $(TARGETS) $(TARGETS:.elf=.hex) $(DEPENDS)
-write:
-	cmd /c "con2com.cmd $(TARGETS:.elf=.hex)"
 .PHONY: all clean
