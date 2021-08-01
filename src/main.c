@@ -20,6 +20,7 @@
 // #include "NoiseTest.h"
 #include "Thunderstruck.h"
 // #include "CityTrial.h"
+// #include "Spelunker.h"
 
 #define includetaiko
 #define includeanalyzer
