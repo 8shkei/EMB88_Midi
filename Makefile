@@ -1,6 +1,6 @@
 #MakeFile C,C++用 SCodeにてソースファイルの拡張子選択
 SCode	 := c
-COM       = com6
+COM       = com5
 CC        = avr-gcc
 
 LDFLAGS   = -lwinmm

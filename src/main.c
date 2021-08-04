@@ -22,10 +22,11 @@
 // #include "CityTrial.h"
 // #include "Spelunker.h"
 
-#define includetaiko
+// #define includetaiko
 #define includeanalyzer
 
 #define vol 255
+#define loop
 
 #ifndef ncmax
 	#define ncmax 255
@@ -89,7 +90,9 @@ ISR(TIMER1_COMPA_vect){
 		if(wait[i]==0){
 			if(num[i]>=lens[i]){
 				if(num[i]>=lens[mostlong]){
+					#ifndef loop
 					TIMSK1= 0;
+					#endif
 					for(int j = 0;j<tc;j++){
 						num[j]=0;
 						wait[j]=1;
