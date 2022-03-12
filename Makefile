@@ -5,7 +5,7 @@ CC        = avr-gcc
 
 LDFLAGS   = -lwinmm
 LIBS      =
-INCLUDE   = -I/mingw64/avr/include/avr -I/mingw64/include -I./include
+INCLUDE   = -I./include -I/mingw64/avr/include/avr
 TARGETS   = Project.elf
 TARGETDIR = .
 SRCROOT   = ./src
