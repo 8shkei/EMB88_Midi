@@ -18,9 +18,10 @@
 // #include "Mario.h"
 // #include "Dial_Up.h"
 // #include "NoiseTest.h"
-#include "Thunderstruck.h"
+// #include "Thunderstruck.h"
 // #include "CityTrial.h"
 // #include "Spelunker.h"
+#include "Maizuru.h"
 
 // #define includetaiko
 #define includeanalyzer
@@ -140,12 +141,16 @@ ISR(TIMER2_OVF_vect){
 	#endif
 	if(nc++>=ncmax){
 		nc=0;
-		for(int i = 1;i<tc;i++){
-			if(notes[(note+i)%tc]){
-				note=(note+i)%tc;
-				break;
+		#ifdef fwaon // 和音と単音の切り替えが多い曲で、切り替わりの違和感を消すためのフラグ
+			note=(note+1)%tc;
+		#else
+			for(int i = 1;i<tc;i++){
+				if(notes[(note+i)%tc]){
+					note=(note+i)%tc;
+					break;
+				}
 			}
-		}
+		#endif
 		#ifdef includenoise
 			if(notes[note] < 10 && notes[note])noise = rand()%(notes[note]*10)+(notes[note]*18);
 			else noise = 0;
