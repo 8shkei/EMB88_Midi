@@ -6,4 +6,4 @@ const PROGMEM unsigned char track3[][2]={{D4,8},{E4,8},{F4S,8},{G4,8},{A4,8},{A4
 #define spd 27
 #define ncmax 200
 #define tc 3
-unsigned char vols[tc]={50,100,100};
+unsigned char vols[tc]={50,70,100};

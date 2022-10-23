@@ -1,6 +1,6 @@
 #MakeFile C,C++用 SCodeにてソースファイルの拡張子選択
 SCode	 := c
-COM       = com5
+COM       = com3
 CC        = avr-gcc
 
 LDFLAGS   = -lwinmm
@@ -29,6 +29,9 @@ OBJDIRS   = $(addprefix $(OBJROOT)/, $(SRCDIRS))
 # 依存ファイル.dを.oファイルから作る
 DEPENDS  := $(OBJECTS:.o=.d)
 
+install:$(TARGETS)
+	@echo Writing now...
+	@cmd /c "con2com $(COM) 38400 $(TARGETS:.elf=.hex) /"
 
 # 依存ファイルを元に実行ファイルを作る
 $(TARGETS): $(OBJECTS) $(LIBS)
@@ -44,9 +47,6 @@ $(OBJROOT)/%.o: $(SRCROOT)/%.${SCode}
 # 依存関係ファイル
 -include $(DEPENDS)
 
-install:$(TARGETS)
-	@echo Writing now...
-	@cmd /c "con2com $(COM) 38400 $(TARGETS:.elf=.hex) /"
 clean:
 	$(RM) $(OBJECTS) $(TARGETS) $(TARGETS:.elf=.hex) $(DEPENDS)
 .PHONY: all clean
